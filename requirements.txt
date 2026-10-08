@@ -1,2 +1,5 @@
+huggingface_hub
 pandas
+pyarrow
 pyyaml
+python-dotenv
