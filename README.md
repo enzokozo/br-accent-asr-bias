@@ -45,17 +45,40 @@ pip install -r requirements.txt
 
 ## Estrutura do repositório
 
-```
-.
+```text
+br-accent-asr-bias/
 ├── data/
-│   └── raw/          # Downloads originais das bases (não versionados)
+│   ├── raw/               # Dados brutos descarregados (CORAA ASR)
+│   └── interim/           # Dados filtrados e preparados em formato Parquet
+├── notebooks/             # Notebooks de execução e análise
+│   └── 01_download_and_transform.ipynb
+├── src/                   # Código fonte e módulos Python
+│   ├── __init__.py
+│   ├── download_coraa.py  # Ingestão e transferência de dados da Hugging Face
+│   └── transform_coraa.py # Tratamento, filtragem e limpeza de dados
+├── .env.example           # Modelo para variáveis de ambiente
 ├── .gitignore
-├── README.md
-└── requirements.txt
+├── requirements.txt       # Dependências do projeto
+└── README.md
 ```
 
 Esta seção é atualizada à medida que novas pastas são criadas.
 
-## Dados
+## Pipeline de Dados
+O tratamento de dados segue os princípios da Arquitetura Medallion:
 
-Os áudios não são versionados no repositório. Cada integrante baixa as bases localmente em `data/raw/`.
+1. **Camada Raw (Bronze)**: Transferência dos ficheiros brutos de áudio e metadados (metadata_dev_final.csv e metadata_test_final.csv) a partir do repositório CORAA v1.1.
+
+2. **Camada Interim (Prata)**:
+
+- Seleção das colunas essenciais (file_path, variety, accent, text).
+
+- Escolha de amostras apenas em português do Brasil (pt_br)
+
+- Remoção de amostras com sotaque indefinido (Misc.).
+
+- Filtragem de frases curtas (mantidas apenas transcrições com mais de 3 palavras).
+
+- Armazenamento otimizado em formato .parquet.
+
+3. **Rastreabilidade**: Registo automático do histórico de extração e transformação em ficheiros proveniencia.jsonl.

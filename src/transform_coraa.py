@@ -37,10 +37,13 @@ def clean_coraa_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     df_clean = df_clean.replace(r"^\s*$", pd.NA, regex=True)
     df_clean = df_clean.dropna(subset=TARGET_COLUMNS)
 
-    # 1. Elimina valores "Misc." na coluna accent
+    # Mantém apenas valores "pt_br" na coluna variety
+    df_clean = df_clean[df_clean["variety"] == "pt_br"]
+
+    # Elimina valores "Misc." na coluna accent
     df_clean = df_clean[df_clean["accent"] != "Misc."]
 
-    # 2. Filtra textos com mais de 3 palavras usando split()
+    # Filtra textos com mais de 3 palavras usando split()
     df_clean = df_clean[df_clean["text"].apply(lambda text: len(text.split()) > 3)]
 
     return df_clean
