@@ -3,3 +3,13 @@ pandas
 pyarrow
 pyyaml
 python-dotenv
+# Transcrição
+torch
+transformers
+soundfile
+librosa
+# Avaliação e análise
+jiwer
+num2words
+matplotlib
+ipykernel
